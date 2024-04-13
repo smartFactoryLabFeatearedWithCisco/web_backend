@@ -46,35 +46,35 @@ io.on("connection", (socket) => {
     console.log(data);
     switch (Name) {
       case "annellingM":
-        annellingM.push(msg);
+        annellingM.push(data);
         console.log(annellingM.length);
         break;
       case "coldMillingM":
-        coldMillingM.push(msg);
+        coldMillingM.push(data);
         break;
       case "cuttingLengthM":
-        cuttingHeightM.push(msg);
+        cuttingHeightM.push(data);
         break;
       case "cuttingWidthM":
-        cuttingWidthM.push(msg);
+        cuttingWidthM.push(data);
         break;
       case "deGassingM":
-        deGassingM.push(msg);
+        deGassingM.push(data);
         break;
       case "holdingM":
-        holdingM.push(msg);
+        holdingM.push(data);
         break;
       case "meltingM":
-        meltingM.push(msg);
+        meltingM.push(data);
         break;
       case "overView":
-        overView.push(msg);
+        overView.push(data);
         break;
       case "slabCasting":
-        slabCastingM.push(msg);
+        slabCastingM.push(data);
         break;
       case "tensionLevelingM":
-        tensionLevelingM.push(msg);
+        tensionLevelingM.push(data);
         break;
       default:
         console.log("nothing corrected");
