@@ -27,6 +27,7 @@ const io = new Server(server, {
 var macineRouter = require("./routes/macineHandler");
 var overViewRouter = require("./routes/overviewHandler");
 var administratorRouter = require("./routes/administratorHandler");
+let machineId = {};
 
 app.use(bodyParser.json());
 app.use("/macineDetail/", macineRouter);
@@ -37,6 +38,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 io.on("connection", (socket) => {
   console.log("successfully connected" + socket.id);
+  socket.on("register", (msg) => {
+    console.log(msg);
+    machineId[msg] = socket.id;
+    console.log(msg, socket.id);
+  });
+  let sentTimer = false;
+
   //   socket.use(([event, ...args], next) => {});
 
   socket.on("sensor Data", (msg) => {
@@ -47,7 +55,11 @@ io.on("connection", (socket) => {
     switch (Name) {
       case "annellingM":
         annellingM.push(data);
-        console.log(annellingM.length);
+        if (data.elec_use < 10 && !sentTimer) {
+          sendMessage("소둔로", data.elec_use, "전기 사용량");
+
+          sentTimer = true;
+        }
         break;
       case "coldMillingM":
         coldMillingM.push(data);
@@ -66,6 +78,9 @@ io.on("connection", (socket) => {
         break;
       case "meltingM":
         meltingM.push(data);
+        if (data.elec_use < 10) {
+          sendMessage("meltingM", data.elec_use, "전기 사용량");
+        }
         break;
       case "overView":
         overView.push(data);
@@ -73,7 +88,7 @@ io.on("connection", (socket) => {
       case "slabCasting":
         slabCastingM.push(data);
         break;
-      case "tensionLevelingM":
+      case "tensionLeveling":
         tensionLevelingM.push(data);
         break;
       default:
